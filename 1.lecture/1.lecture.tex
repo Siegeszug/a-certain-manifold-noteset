@@ -7,9 +7,88 @@
 \textbf{Scribed by: Kyle Dituro} \hfill \textbf{September 6\tht, 2023}\hrule
 \vspace{.2in}
 
-\section{What is a Manifold?}
+\section{C inf functions on Rn}
 
+\begin{df}
+  Let \(U \subset \R^n\) be open, \(p \in U\). \(f: U \to \R\) is \(C^k\) at \(p\) if all partials of \(f\) of order \(\leq k\) exist and are continuous at \(p\). E.g. \(C^0\) is continuous, \(C^1\) is continuous w/ first partials also continuous.
+\end{df}
 
+For the sake of simplicity in this course, we care only about functions which are \(C^\infty\), in other words \(f: U \to \R\) is \(C^\infty\) at \(p \in U\) if \(f\) is \(C^k\) for all \(k = 0, 1, 2, \ldots\).
+
+We also care about another type of function, namely the analytic ones.
+
+\begin{df}
+  A function \(f: U \to \R\) is \textbf{analytic} at \(p\) if \(f(x)\) is equal to its Taylor's series at \(p\) in a neighborhood of \(p\).
+\end{df}
+
+Importantly, an analytic function is infinitely differentiable within its radius of convergence, since the power series can be differentiated term by term. This suggests the following lemma:
+
+\begin{lm}
+  Analytic \(\Rightarrow C^\infty\).
+\end{lm}
+
+Notice that, notably, the converse is not true:
+
+\begin{exa}
+  Take \(f(x) =
+  \begin{cases}
+    \frac{1}{e^{\frac{1}{x}}} & x > 0 \\
+    0 & x \leq 0
+  \end{cases}
+  \). It is evidently clear that this function is \(C^\infty\). Derivative can easily be computed, and verifying that they are continuous is easy. However, notice that \(f^{(k)}(0) = 0\ \forall k = 0, 1, 2, \ldots\). Actually demonstrating this is a simple matter of induction. Therefore, the Taylor's series of \(f\) at \(x = 0\) is the zero function.
+
+  Thus \(f(x)\) is not equal to its Taylor's series at \(0\) in any neighborhood of \(0\).
+
+  Therefore, \(f\) is not analytic at zero.
+\end{exa}
+
+Luckily, for \(C^\infty\) functions there is an analogue that works.
+
+The \textbf{Taylor's series with Remainder} of a function is equal to
+
+\begin{align*}
+  f(x) &= f(p) + \sum_{i = 1}^n \frac{\partial f}{\partial x^i}(p) (x^i - p^i) + \frac{1}{2!} \sum_{i, j} \frac{\partial^2 f}{\partial x^i \partial x^j}(p) (x^i - p^i)(x^j - p^j) + \ldots + k\th \text{ term } + \underbrace{k+1}_{\text{remainder}} \\
+  p &= (p^1, \ldots, p^n) \in \R^n
+\end{align*}
+
+You know what a star-shaped polygon is. It's a polygon with a nonempty visibility kernel.
+
+\begin{thm}{Taylor's Theorem with Remainder}
+  Let \(U\) be a star-shaped open set in \(\R^n\) with respect to some point \(p \in U\).
+
+  If \(f: U \to \R \) is \(C^\infty\), then \(\exists C^\infty\) functions \(g_1(x), \ldots, g_n(x)\) such that
+  \begin{align*}
+    f(x) = f(p) + \sum_{i = 1}^n g_i(x)(^i - p^i) \ \text{and}\ g_i(p) = \frac{\partial f}{\partial x^i}(p).
+  \end{align*}
+\end{thm}
+
+Now we remember calc III... uh oh.
+
+\begin{center}
+  \begin{tikzcd}
+    & f \arrow[dl, dash] \arrow[d, dash] \arrow[dr, dash] & \\
+    x^1 \arrow[rr, dotted, dash] \arrow[dr, dash]& \hspace{0pt} \arrow[d, dash] & x^n \arrow[dl, dash] \\
+    & t & 
+  \end{tikzcd}
+\end{center}
+\(\frac{d f}{dt} = \sum_{i = 1}^n \frac{\partial f}{\partial x^i} * \frac{d x^i}{d t}\).
+Yeah, it's the chain rule.
+
+\begin{proof}
+  Let \(y \in U\) The parametrization of \(\overline{py}\) is \(x(t) = p + t(y - p)\).
+
+  Note that \(x(0) = p\), \(x(1) = y\), \(x^i(t) = p^i + t(y^i - p^i) \frac{d x^i}{d t} = y^i - p ^i\).
+
+  And also see
+  \begin{align*}
+    f(y) - f(p) &= f(x(1)) - f(x(0)) \\
+                &= \int_0^1 \frac{d}{dt}f(x(t)) dt \\
+                &= \int_0^1 \sum_i \frac{\partial f}{\partial x^i}(x(t)) \frac{dx^i}{dt} dt \\
+                &= \sum_i \underbrace{\int_0^1 \frac{\partial f}{\partial x^i} (p + t(y - p)) dt * (y^i - p^i)}_{g_i(y)}
+  \end{align*}
+
+  And et cetera.
+\end{proof}
 \end{document}
 %%% Local Variables:
 %%% mode: latex
