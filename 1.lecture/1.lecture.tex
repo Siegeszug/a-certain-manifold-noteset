@@ -58,7 +58,7 @@ You know what a star-shaped polygon is. It's a polygon with a nonempty visibilit
 
   If \(f: U \to \R \) is \(C^\infty\), then \(\exists C^\infty\) functions \(g_1(x), \ldots, g_n(x)\) such that
   \begin{align*}
-    f(x) = f(p) + \sum_{i = 1}^n g_i(x)(^i - p^i) \ \text{and}\ g_i(p) = \frac{\partial f}{\partial x^i}(p).
+    f(x) = f(p) + \sum_{i = 1}^n g_i(x)(x^i - p^i) \ \text{and}\ g_i(p) = \frac{\partial f}{\partial x^i}(p).
   \end{align*}
 \end{thm}
 
@@ -89,6 +89,131 @@ Yeah, it's the chain rule.
 
   And et cetera.
 \end{proof}
+
+\section{Tangent Vectors}
+
+We have the issue where our current understanding of a tangent vector where our parameterization of the vectors are firmly rooted in \(\R^3\). So we're going to re-define the tangent vector by what we want it to do: compute the \textbf{direcitonal derivative}.
+
+\begin{idea}
+  If \(v_p \in T_p(U)\) and \(f \in C^\infty (U)\), then
+  \begin{align*}
+    D_{v_p} &= \text{directional derivative of } f \text{ in direction of} v_p \text{ at } p \\
+            &= \left.\frac{d}{dt}\right\vert_{t=0} f(\underbrace{p + tv_p}_{\text{line thru } p \text{ with dir. } v_p}) \\
+  \end{align*}
+  Then, through application of the chain rule, we get
+  \begin{align}
+    D_{v_p} = \sum v^i \left.\frac{\partial}{\partial x^i}\right\vert_{p}
+  \end{align}
+\end{idea}
+
+\begin{df}
+  Let \((f, u)\) denote a \(C^\infty\) function \(f: U \to \R\), \(p \in U\). We say that \((f, U) \sim (g, V)\) if \(\exists W \subset U \cap V\) such that \(f = g\) on \(W\).
+\end{df}
+
+\begin{notn}
+  \([(f, U)] = \) equiv class of \((f, U) = \) germ of \(f\) at \(p\).
+
+  \(C_p^\infty = \opn \text{germs of } C^\infty\ \text{func at } p\cls\).
+\end{notn}
+
+\begin{lm}
+  Germs are \textbf{module-like}, and we will call them a \(C_p^\infty\) algebra over \(\R\).
+\end{lm}
+
+\begin{prop}
+  \(D_{v_p}: C_p^\infty \to \R\).
+  \begin{enumerate}
+  \item [(i)] \(D_{v_p}\)is \(\R\)-linear.
+    \begin{align*}
+      D_{v_p}(f + g) = D_{v_p}f + D_{v_p}g \\
+      D_{v_p}(\lambda f) = \lambda D_{v_p}f.
+    \end{align*}
+  \item [(ii)] \(D_{v_p}(fg) = (D_{v_p}f) g(p) + f(p)D_{v_p}g\) (Liebniz rule)
+  \end{enumerate}
+\end{prop}
+\begin{df}
+  A function \(D = C_p^\infty \to \R\) satisfying conditions \((i)\) and \((ii)\) prior is called a \textbf{derivation at \(p\)} or a \textbf{point derivation} of \(C_p^\infty\).
+\end{df}
+\begin{df}
+  \(\mathcal{D}_p(\R^n) = \opn \text{all point-derivations of } C_p^\infty\cls\)
+\end{df}
+
+Notice that the structure of \(\mathcal{D}_p(\R^n)\) has an addition and scalar multiplication structure, but notably not a vector multiplication structure. So this is a vector space.
+
+\begin{thm}
+  The map \(
+  \begin{matrix}
+    \phi : &T_p(\R^n) \to \mathcal{D}_p(\R^n) \\
+           &v_p \mapsto D_{v_p}
+  \end{matrix}\) is a linear isomorphism of vector spaces.
+\end{thm}
+\begin{lm}
+  If \(D \in \mathcal{D}_p(\R^n)\) then \(Dc = 0\) \(\forall c \in \R\).
+\end{lm}
+\begin{proof}
+  \(D1 = D(1 \cdot 1) = (D1) \cdot 1 + 1 \cdot D 1\), so \(0 = D1\). Thus \(Dc = D(c \cdot 1) = cD1 = c \cdot 0 = 0\).
+
+  Thus
+  \begin{align*}
+    Df &= D(f(p) + \sum g_i(x)(x^i - p^i)) \\
+       &= D(f(p)) + \sum (Dg_i)(p^i - p^i) + g_i(p D(x^i - p^i)) \\
+       &= \sum (Dx^i)\left.\frac{\partial}{\partial x^i}\right\vert_p f \\
+    &= \sum (Dx^i)e_{ip}
+  \end{align*}
+  Thus we have established the one-to-one correspondane
+  \begin{align}
+    v_p = \sum v^ie_{i,p} \longleftrightarrow D_{v_p} = \sum v^i \left.\frac{\partial}{\partial x^i}\right\vert_{p}
+  \end{align}
+\end{proof}
+\begin{proof}[Of theorem] We do the usual thing.
+  \begin{enumerate}
+  \item[\textbf{Inj.}] Suppose \(\phi(v_p) = D = \sum v^i \left.\frac{\partial}{\partial x^i}\right\vert_p = 0\).
+    Now apply to \(x^j\): \(\sum v^i \left.\frac{\partial}{\partial x^i}\right\vert_p x^j = 0\).
+    And
+    \begin{align*}
+      \frac{\partial x^j}{\partial x^i} &=
+      \begin{cases}
+        1 & \text{for } j = i, \\
+        0 & \text{for } j \neq i
+      \end{cases}. \\
+      = \delta_i^{\gamma}. \\
+      \sum_i v^i \frac{\partial x^j}{\partial x^i}(p) &= \sum_i v^i \delta_i^j \\ &= v^j \forall j.
+    \end{align*}
+    So \(v_p = 0\).
+  \item [\textbf{Surj.}] Let \(D \in \mathcal{D}_p(\R^n)\). Suppose \(D = D_{v_p}\) for \(v_p \in T_p(\R^n)\). So then
+
+    \begin{align*}
+      D = \sum_i v^i \left.\frac{\partial}{\partial x^i}\right\vert_p.
+    \end{align*}
+
+    Apply both sides to \(x^j\):
+    \begin{align*}
+      Dx^j = \sum v^i \left.\frac{\partial}{\partial x^i}\right\vert_p x^j = \sum_i v^i \delta^j_i = v^j.
+    \end{align*}
+    So \(v_p = \sum (Dx^i)\left.\frac{\partial}{\partial x^i}\right\vert_p\). then by Taylor's Theorem with Remainder , \(\exists g_i \in C^\infty(U)\) such that \(f(x) = f(p) + \sum g_i(x) (x^i - p^i)\), and \(g_i(p) = \frac{\partial f}{\partial x^i}(p)\).
+  \end{enumerate}
+\end{proof}
+
+\begin{df}
+  \(T_p(U) = \opn \text{point-derivations of } C_p^\infty\cls\)
+\end{df}
+
+\begin{df}
+  A \textbf{vector field} on open \(U \subset \R^n\) \(X: U \to \coprod_{p \in U}T_p(U)\) (where \(\coprod\) denotes the disjoint union) such that \(X_p \in T_p(U)\).
+\end{df}
+\begin{note}
+  If \(X_p \in T_p(U)\), then \(X_p = \sum a^i(p)\left.\frac{\partial}{\partial x^i}\right\vert_p\).
+\end{note}
+
+\begin{lm}
+  \(X = \sum a6i \frac{\partial}{\partial x_i}\), where \(a^i: U \to \R\) are functions.
+\end{lm}
+\begin{df}
+  A vector field \(X = \sum a^i \frac{\partial}{\partial x^i}\) on \(U\) is \(C^\infty\) if all \(a^i:U \to \R\) are \(C^\infty\) functions.
+  \end{df}
+  \begin{notn}
+    \(\mathcal{X}(U) = \opn C^\infty \text{ v.f. on U }\cls\) is a vector space on \(\R\).
+  \end{notn}
 \end{document}
 %%% Local Variables:
 %%% mode: latex
